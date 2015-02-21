@@ -1,12 +1,12 @@
 Summary:	Client library for accessing NFS shares over network
 Summary(pl.UTF-8):	Biblioteka kliencka do dostępu do udziałów NFS poprzez sieć
 Name:		libnfs
-Version:	1.9.6
+Version:	1.9.7
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	https://sites.google.com/site/libnfstarballs/li/%{name}-%{version}.tar.gz
-# Source0-md5:	9eb3afde906022c3512dd740304ed10c
+# Source0-md5:	8041b25a5cd5ee3e58e0900fb07ab2f1
 URL:		https://github.com/sahlberg/libnfs
 BuildRequires:	pkgconfig
 BuildRequires:	popt-devel
@@ -69,7 +69,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING README
 %attr(755,root,root) %{_bindir}/nfs-ls
 %attr(755,root,root) %{_libdir}/libnfs.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libnfs.so.4
+%attr(755,root,root) %ghost %{_libdir}/libnfs.so.8
 %{_mandir}/man1/nfs-ls.1*
 
 %files devel
