@@ -2,7 +2,7 @@ Summary:	Client library for accessing NFS shares over network
 Summary(pl.UTF-8):	Biblioteka kliencka do dostępu do udziałów NFS poprzez sieć
 Name:		libnfs
 Version:	1.9.7
-Release:	1
+Release:	2
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	https://sites.google.com/site/libnfstarballs/li/%{name}-%{version}.tar.gz
