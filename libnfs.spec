@@ -1,12 +1,12 @@
 Summary:	Client library for accessing NFS shares over network
 Summary(pl.UTF-8):	Biblioteka kliencka do dostępu do udziałów NFS poprzez sieć
 Name:		libnfs
-Version:	1.9.7
-Release:	2
-License:	LGPL v2.1+
+Version:	1.9.8
+Release:	1
+License:	LGPL v2.1+ and BSD
 Group:		Libraries
 Source0:	https://sites.google.com/site/libnfstarballs/li/%{name}-%{version}.tar.gz
-# Source0-md5:	8041b25a5cd5ee3e58e0900fb07ab2f1
+# Source0-md5:	8d6c4fc63bd313cf6dc4387b45a0ed41
 URL:		https://github.com/sahlberg/libnfs
 BuildRequires:	pkgconfig
 BuildRequires:	popt-devel
@@ -21,14 +21,15 @@ Biblioteka kliencka do dostępu do udziałów NFS poprzez sieć.
 %package devel
 Summary:	Header files for libnfs library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libnfs
+License:	LGPL v2.1+ and BSD and GPL v3+
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description devel
-Header files for libnfs library.
+Header files and examples for libnfs library.
 
 %description devel -l pl.UTF-8
-Pliki nagłówkowe biblioteki libnfs.
+Pliki nagłówkowe oraz przykłady dla biblioteki libnfs.
 
 %package static
 Summary:	Static libnfs library
@@ -41,6 +42,15 @@ Static libnfs library.
 
 %description static -l pl.UTF-8
 Statyczna biblioteka libnfs.
+
+%package utils
+Summary:	Utils for accessing NFS servers
+License:	GPL v3+
+Group:		Applications
+Requires:	%{name} = %{version}-%{release}
+
+%description utils
+Simple client programs for accessing NFS servers using libnfs.
 
 %prep
 %setup -q
@@ -67,13 +77,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc COPYING README
-%attr(755,root,root) %{_bindir}/nfs-ls
 %attr(755,root,root) %{_libdir}/libnfs.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libnfs.so.8
-%{_mandir}/man1/nfs-ls.1*
 
 %files devel
 %defattr(644,root,root,755)
+%doc examples/*.c
 %attr(755,root,root) %{_libdir}/libnfs.so
 %{_includedir}/nfsc
 %{_pkgconfigdir}/libnfs.pc
@@ -81,3 +90,12 @@ rm -rf $RPM_BUILD_ROOT
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libnfs.a
+
+%files utils
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/nfs-cat
+%attr(755,root,root) %{_bindir}/nfs-cp
+%attr(755,root,root) %{_bindir}/nfs-ls
+%{_mandir}/man1/nfs-cat.1*
+%{_mandir}/man1/nfs-cp.1*
+%{_mandir}/man1/nfs-ls.1*
