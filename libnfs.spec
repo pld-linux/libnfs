@@ -3,6 +3,7 @@ Summary(pl.UTF-8):	Biblioteka kliencka do dostępu do udziałów NFS poprzez sie
 Name:		libnfs
 Version:	1.9.8
 Release:	1
+# library code is LGPL, protocol definition files are BSD licensed
 License:	LGPL v2.1+ and BSD
 Group:		Libraries
 Source0:	https://sites.google.com/site/libnfstarballs/li/%{name}-%{version}.tar.gz
@@ -21,7 +22,7 @@ Biblioteka kliencka do dostępu do udziałów NFS poprzez sieć.
 %package devel
 Summary:	Header files for libnfs library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libnfs
-License:	LGPL v2.1+ and BSD and GPL v3+
+License:	LGPL v2.1+ and BSD
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -34,6 +35,7 @@ Pliki nagłówkowe oraz przykłady dla biblioteki libnfs.
 %package static
 Summary:	Static libnfs library
 Summary(pl.UTF-8):	Statyczna biblioteka libnfs
+License:	LGPL v2.1+ and BSD
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
@@ -43,14 +45,31 @@ Static libnfs library.
 %description static -l pl.UTF-8
 Statyczna biblioteka libnfs.
 
+%package examples
+Summary:	Example code for libnfs library
+Summary(pl.UTF-8):	Przykładowy kod źródłowy wykorzystujący bibliotekę libnfs
+License:	GPL v3+
+Group:		Documentation
+
+%description examples
+Example code for libnfs library.
+
+%description examples -l pl.UTF-8
+Przykładowy kod źródłowy wykorzystujący bibliotekę libnfs.
+
 %package utils
 Summary:	Utils for accessing NFS servers
+Summary(pl.UTF-8):	Narzędzia służące do dostępu do serwerów NFS
 License:	GPL v3+
-Group:		Applications
+Group:		Applications/Networking
 Requires:	%{name} = %{version}-%{release}
 
 %description utils
 Simple client programs for accessing NFS servers using libnfs.
+
+%description utils -l pl.UTF-8
+Proste programy klienckie służące do dostępu do serwerów NFS przy
+użyciu biblioteki libnfs.
 
 %prep
 %setup -q
@@ -68,6 +87,9 @@ rm -rf $RPM_BUILD_ROOT
 # obsoleted by pkg-config
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libnfs.la
 
+install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+cp -p examples/*.c $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -82,7 +104,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc examples/*.c
 %attr(755,root,root) %{_libdir}/libnfs.so
 %{_includedir}/nfsc
 %{_pkgconfigdir}/libnfs.pc
@@ -90,6 +111,10 @@ rm -rf $RPM_BUILD_ROOT
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libnfs.a
+
+%files examples
+%defattr(644,root,root,755)
+%{_examplesdir}/%{name}-%{version}
 
 %files utils
 %defattr(644,root,root,755)
