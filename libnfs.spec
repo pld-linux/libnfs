@@ -1,13 +1,13 @@
 Summary:	Client library for accessing NFS shares over network
 Summary(pl.UTF-8):	Biblioteka kliencka do dostępu do udziałów NFS poprzez sieć
 Name:		libnfs
-Version:	1.10.0
+Version:	1.11.0
 Release:	1
 # library code is LGPL, protocol definition files are BSD licensed
 License:	LGPL v2.1+ and BSD
 Group:		Libraries
 Source0:	https://sites.google.com/site/libnfstarballs/li/%{name}-%{version}.tar.gz
-# Source0-md5:	b8d72202d95ca308a3d9bec9afabf6cc
+# Source0-md5:	a1b5a5fe925030a84c3188b23960f4c9
 URL:		https://github.com/sahlberg/libnfs
 BuildRequires:	pkgconfig
 BuildRequires:	popt-devel
@@ -75,6 +75,10 @@ użyciu biblioteki libnfs.
 %setup -q
 
 %build
+# XXX: remove this hack when autoconf supports glibc major/minor/makedev changes
+# (or removes them from sys/types.h completely)
+CPPFLAGS="%{rpmcppflags} -DMAJOR_IN_SYSMACROS"
+
 %configure
 %{__make}
 
