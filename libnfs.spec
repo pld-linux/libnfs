@@ -75,10 +75,6 @@ użyciu biblioteki libnfs.
 %setup -q
 
 %build
-# XXX: remove this hack when autoconf supports glibc major/minor/makedev changes
-# (or removes them from sys/types.h completely)
-CPPFLAGS="%{rpmcppflags} -DMAJOR_IN_SYSMACROS"
-
 %configure
 %{__make}
 
