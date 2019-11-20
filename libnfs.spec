@@ -1,14 +1,18 @@
 Summary:	Client library for accessing NFS shares over network
 Summary(pl.UTF-8):	Biblioteka kliencka do dostępu do udziałów NFS poprzez sieć
 Name:		libnfs
-Version:	2.0.0
+Version:	4.0.0
 Release:	1
 # library code is LGPL, protocol definition files are BSD licensed
 License:	LGPL v2.1+ and BSD
 Group:		Libraries
-Source0:	https://sites.google.com/site/libnfstarballs/li/%{name}-%{version}.tar.gz
-# Source0-md5:	87d913e26b9c4b7fe0b0460fa4e4cd99
+#Source0Download: https://github.com/sahlberg/libnfs/releases
+Source0:	https://github.com/sahlberg/libnfs/archive/libnfs-%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	623c6d5a4c514a9811c713effeaf68fb
 URL:		https://github.com/sahlberg/libnfs
+BuildRequires:	autoconf >= 2.50
+BuildRequires:	automake
+BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	popt-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -72,9 +76,14 @@ Proste programy klienckie służące do dostępu do serwerów NFS przy
 użyciu biblioteki libnfs.
 
 %prep
-%setup -q
+%setup -q -n %{name}-libnfs-%{version}
 
 %build
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
 %configure
 %{__make}
 
@@ -98,9 +107,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc COPYING README
+%doc CHANGELOG COPYING LICENCE-BSD.txt README
 %attr(755,root,root) %{_libdir}/libnfs.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libnfs.so.11
+%attr(755,root,root) %ghost %{_libdir}/libnfs.so.13
 
 %files devel
 %defattr(644,root,root,755)
