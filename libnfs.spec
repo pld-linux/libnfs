@@ -1,14 +1,14 @@
 Summary:	Client library for accessing NFS shares over network
 Summary(pl.UTF-8):	Biblioteka kliencka do dostępu do udziałów NFS poprzez sieć
 Name:		libnfs
-Version:	4.0.0
+Version:	5.0.1
 Release:	1
 # library code is LGPL, protocol definition files are BSD licensed
 License:	LGPL v2.1+ and BSD
 Group:		Libraries
-#Source0Download: https://github.com/sahlberg/libnfs/releases
+#Source0Download: https://github.com/sahlberg/libnfs/tags
 Source0:	https://github.com/sahlberg/libnfs/archive/libnfs-%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	623c6d5a4c514a9811c713effeaf68fb
+# Source0-md5:	4bd3d1fc097c9ba51c7182980b44ab5f
 URL:		https://github.com/sahlberg/libnfs
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
@@ -109,7 +109,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc CHANGELOG COPYING LICENCE-BSD.txt README
 %attr(755,root,root) %{_libdir}/libnfs.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libnfs.so.13
+%attr(755,root,root) %ghost %{_libdir}/libnfs.so.14
 
 %files devel
 %defattr(644,root,root,755)
@@ -130,6 +130,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/nfs-cat
 %attr(755,root,root) %{_bindir}/nfs-cp
 %attr(755,root,root) %{_bindir}/nfs-ls
+%attr(755,root,root) %{_bindir}/nfs-stat
 %{_mandir}/man1/nfs-cat.1*
 %{_mandir}/man1/nfs-cp.1*
 %{_mandir}/man1/nfs-ls.1*
