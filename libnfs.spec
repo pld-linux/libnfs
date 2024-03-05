@@ -1,14 +1,14 @@
 Summary:	Client library for accessing NFS shares over network
 Summary(pl.UTF-8):	Biblioteka kliencka do dostępu do udziałów NFS poprzez sieć
 Name:		libnfs
-Version:	5.0.2
-Release:	2
+Version:	5.0.3
+Release:	1
 # library code is LGPL, protocol definition files are BSD licensed
 License:	LGPL v2.1+ and BSD
 Group:		Libraries
 #Source0Download: https://github.com/sahlberg/libnfs/tags
 Source0:	https://github.com/sahlberg/libnfs/archive/libnfs-%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	115034aab322d05235a9555d057f8b14
+# Source0-md5:	27318b6192c960f440415d3284663162
 URL:		https://github.com/sahlberg/libnfs
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
