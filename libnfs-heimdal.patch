@@ -1,0 +1,80 @@
+--- libnfs-libnfs-6.0.2/lib/krb5-wrapper.c.orig	2024-12-14 09:03:11.000000000 +0100
++++ libnfs-libnfs-6.0.2/lib/krb5-wrapper.c	2025-06-05 21:57:25.240046026 +0200
+@@ -57,7 +57,7 @@
+ #include <sys/unistd.h>
+ #endif
+ 
+-#include <krb5/krb5.h>
++#include <krb5.h>
+ #if __APPLE__
+ #include <GSS/GSS.h>
+ #else
+@@ -157,7 +157,6 @@ krb5_auth_init(struct rpc_context *rpc,
+         char *nc_password = NULL;
+         //gss_buffer_desc passwd;
+         gss_OID_set_desc mechOidSet;
+-        gss_OID_set_desc wantMech;
+ 
+         auth_data = calloc(1, sizeof(struct private_auth_data));
+         if (auth_data == NULL) {
+@@ -225,8 +224,9 @@ krb5_auth_init(struct rpc_context *rpc,
+                 return NULL;
+         }
+ 
+-        #ifndef __APPLE__ /* gss_set_neg_mechs is not defined on macOS/iOS. */
++        #if !defined(__APPLE__) && 0 /* gss_set_neg_mechs is not defined on macOS/iOS/Heimdal. */
+         if (rpc->sec != RPC_SEC_UNDEFINED) {
++		gss_OID_set_desc wantMech;
+                 wantMech.count = 1;
+                 
+                 switch (rpc->sec) {
+--- libnfs-libnfs-6.0.2/configure.ac.orig	2024-12-14 09:03:11.000000000 +0100
++++ libnfs-libnfs-6.0.2/configure.ac	2025-06-05 21:51:28.888643214 +0200
+@@ -43,7 +43,7 @@ AC_ARG_WITH([libkrb5],
+             [AS_HELP_STRING([--without-libkrb5],
+                             [Do not link with libkrb5 even if available.])])
+ AS_IF([test "x$with_libkrb5" != "xno"], [
+-    MAYBE_LIBKRB5="-lgssapi_krb5"
++    MAYBE_LIBKRB5="-lgssapi"
+     AC_DEFINE([HAVE_LIBKRB5], [1], [Whether we use gssapi_krb5 or not])
+     AC_MSG_NOTICE([Build with gssapi_krb5 support])
+     dnl  Check for gssapi/gssapi.h
+--- libnfs-libnfs-6.0.2/include/libnfs-private.h.orig	2024-12-14 09:03:11.000000000 +0100
++++ libnfs-libnfs-6.0.2/include/libnfs-private.h	2025-06-06 06:28:36.997216189 +0200
+@@ -268,7 +268,7 @@ struct tls_context {
+ 
+ #define INC_STATS(rpc, stat) ++((rpc)->stats.stat)
+ 
+-struct gss_ctx_id_struct;
++struct gss_ctx_id_t_desc_struct;
+ struct rpc_context {
+ 	uint32_t magic;
+ 	int fd;
+@@ -437,7 +437,7 @@ struct rpc_context {
+         char *context;
+ 
+         void *auth_data; /* for krb5 */
+-        struct gss_ctx_id_struct *gss_context;
++        struct gss_ctx_id_t_desc_struct *gss_context;
+ #endif /* HAVE_LIBKRB5 */
+ 
+         /* Is a server context ? */
+--- libnfs-libnfs-6.0.2/include/nfsc/libnfs-zdr.h.orig	2024-12-14 09:03:11.000000000 +0100
++++ libnfs-libnfs-6.0.2/include/nfsc/libnfs-zdr.h	2025-06-06 06:29:07.237052366 +0200
+@@ -118,14 +118,14 @@ struct opaque_cred {
+ 	uint32_t oa_length;
+ };
+ 
+-struct gss_ctx_id_struct;
++struct gss_ctx_id_t_desc_struct;
+ struct opaque_verf {
+ 	uint32_t oa_flavor;
+ 	caddr_t  oa_base;
+ 	uint32_t oa_length;
+ 
+         /* GSS */
+-        struct gss_ctx_id_struct *gss_context;
++        struct gss_ctx_id_t_desc_struct *gss_context;
+ };
+ extern struct opaque_verf _null_auth;
+ 

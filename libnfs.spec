@@ -1,20 +1,32 @@
+#
+# Conditional build:
+%bcond_with	krb5	# MIT Kerberos instead of Heimdal
+
 Summary:	Client library for accessing NFS shares over network
 Summary(pl.UTF-8):	Biblioteka kliencka do dostępu do udziałów NFS poprzez sieć
 Name:		libnfs
-Version:	5.0.3
+Version:	6.0.2
 Release:	1
 # library code is LGPL, protocol definition files are BSD licensed
 License:	LGPL v2.1+ and BSD
 Group:		Libraries
 #Source0Download: https://github.com/sahlberg/libnfs/tags
 Source0:	https://github.com/sahlberg/libnfs/archive/libnfs-%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	27318b6192c960f440415d3284663162
+# Source0-md5:	36efdd459200a2504c84f89786270daf
+Patch0:		%{name}-link.patch
+Patch1:		%{name}-heimdal.patch
 URL:		https://github.com/sahlberg/libnfs
-BuildRequires:	autoconf >= 2.50
+BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
-BuildRequires:	libtool
+BuildRequires:	gnutls-devel
+BuildRequires:	libtool >= 2:2
 BuildRequires:	pkgconfig
 BuildRequires:	popt-devel
+%if %{with krb5}
+BuildRequires:	krb5-devel
+%else
+BuildRequires:	heimdal-devel
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -77,6 +89,10 @@ użyciu biblioteki libnfs.
 
 %prep
 %setup -q -n %{name}-libnfs-%{version}
+%patch -P0 -p1
+%if %{without krb5}
+%patch -P1 -p1
+%endif
 
 %build
 %{__libtoolize}
@@ -109,7 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc CHANGELOG COPYING LICENCE-BSD.txt README
 %attr(755,root,root) %{_libdir}/libnfs.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libnfs.so.14
+%attr(755,root,root) %ghost %{_libdir}/libnfs.so.16
 
 %files devel
 %defattr(644,root,root,755)

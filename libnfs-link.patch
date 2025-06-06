@@ -1,0 +1,21 @@
+--- libnfs-libnfs-6.0.2/lib/Makefile.am.orig	2024-12-14 09:03:11.000000000 +0100
++++ libnfs-libnfs-6.0.2/lib/Makefile.am	2025-06-06 17:29:04.539202035 +0200
+@@ -30,8 +30,7 @@ libnfs_la_SOURCES = \
+ SOCURRENT=16
+ SOREVISION=2
+ SOAGE=0
+-libnfs_la_LDFLAGS = -version-info $(SOCURRENT):$(SOREVISION):$(SOAGE) \
+-	$(MAYBE_LIBKRB5)
++libnfs_la_LDFLAGS = -version-info $(SOCURRENT):$(SOREVISION):$(SOAGE)
+ if HAVE_WIN32
+ libnfs_la_LDFLAGS += -no-undefined
+ endif
+@@ -44,6 +43,8 @@ libnfs_la_LIBADD = \
+ 	../nsm/libnsm.la \
+ 	../portmap/libportmap.la \
+ 	../rquota/librquota.la \
++	$(MAYBE_LIBKRB5) \
++	-lgnutls \
+ 	$(LIBSOCKET)
+ 
+ if HAVE_TLS
